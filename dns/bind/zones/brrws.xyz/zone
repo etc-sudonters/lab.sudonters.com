@@ -1,0 +1,14 @@
+$ORIGIN .
+$TTL 907200     ; 1 week 3 days 12 hours
+brrws.xyz IN SOA dns.brrws.xyz. etc.sudonters.com. (
+                                1263527931 ; serial
+                                10800      ; refresh (3 hours)
+                                3600       ; retry (1 hour)
+                                604800     ; expire (1 week)
+                                38400      ; minimum (10 hours 40 minutes)
+                                )
+                        NS      dns.brrws.xyz.
+                        A       10.31.0.2
+$ORIGIN brrws.xyz.
+$TTL 907200     ; 1 week 3 days 12 hours
+dns                     A       10.31.0.2

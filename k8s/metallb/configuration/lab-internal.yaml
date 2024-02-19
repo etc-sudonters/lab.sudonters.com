@@ -1,0 +1,63 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: lab-internal
+  namespace: metallb
+spec:
+  autoAssign: true
+  avoidBuggyIPs: true
+  addresses:
+    - 10.60.22.0/24
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: lab-internal
+  namespace: metallb
+spec:
+  ipAddressPools:
+    - lab-internal
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lab-internal-metallb
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lab-internal
+  namespace: lab-internal-metallb
+  annotations:
+    metallb.universe.tf/address-pool: lab-internal
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 5678
+  selector:
+    app: dragonfruit
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dragonfruit
+  name: dragonfruit
+  namespace: lab-internal-metallb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dragonfruit
+  template:
+    metadata:
+      labels:
+        app: dragonfruit
+    spec:
+      containers:
+      - image: hashicorp/http-echo
+        name: http-echo
+        args: ["-text", "dragonfruit"]
+        ports:
+          - containerPort: 5678

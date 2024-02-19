@@ -1,0 +1,15 @@
+$ORIGIN .
+$TTL 907200     ; 1 week 3 days 12 hours
+0.31.10.in-addr.arpa    IN SOA  dns.burrow.lab.sudonters.com. etc.sudonters.com. (
+                                1263527896 ; serial
+                                10800      ; refresh (3 hours)
+                                3600       ; retry (1 hour)
+                                604800     ; expire (1 week)
+                                38400      ; minimum (10 hours 40 minutes)
+                                )
+                        NS      dns.burrow.lab.sudonters.com.
+$ORIGIN 0.31.10.in-addr.arpa.
+1                       PTR     nat.burrow.lab.sudonters.com.
+                        PTR     wombat.burrow.lab.sudonters.com.
+2                       PTR     dns.burrow.lab.sudonters.com.
+                        PTR     raccoon.burrow.lab.sudonters.com.

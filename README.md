@@ -7,7 +7,7 @@ Homelab setup.
 * sdntrs.quest -- privately exposed services
 
 
-Zones are loaded from `/opt/sudonters/zones`, from there configurations are
+Zones are loaded from `/etc/sudonters/zones`, from there configurations are
 linked to:
 
 * `<zone-name>/named.conf` -> `/var/run/sudonters/dns.d/<zone-name>`

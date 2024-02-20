@@ -1,0 +1,10 @@
+[Unit]
+Description=Configures node based on /etc/sudonters
+Before=network-pre.target
+Wants=network-pre.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/etc/sudonters/network.sh /etc/sudonters/network/ /etc/network/
+ExecStart=/etc/sudonters/zones.sh /etc/sudonters/zones/

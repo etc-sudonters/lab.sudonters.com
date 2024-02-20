@@ -1,28 +1,3 @@
-acl self {
-    127.0.0.1/32;
-    ::1/128;
-    localhost;
-};
-
-acl brrws-xyz {
-    10.60.22.0/24;
-};
-
-acl sdntrs-quest {
-    10.4.20.0/24;
-};
-
-acl burrow-lab {
-    10.31.0.0/24;
-};
-
-acl lab-cinematic-universe {
-    self;
-    brrws-xyz;
-    sdntrs-quest;
-    burrow-lab;
-}
-
 options {
         directory "/var/cache/bind";
 
@@ -53,11 +28,7 @@ options {
 
         auth-nxdomain no;
 
-        allow-query {
-            lab-cinematic-universe;
-        };
-
-        allow-transfer {
-            lab-cinematic-universe;
-        };
+        allow-recursion { any; };
+        allow-query { any; };
+        allow-transfer { any; };
 };

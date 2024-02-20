@@ -10,7 +10,7 @@ Homelab setup.
 Zones are loaded from `/opt/sudonters/zones`, from there configurations are
 linked to:
 
-* `<zone-name>/named.conf` -> `/var/run/sudonters/dns.d/<zone-name>-named.conf`
-* `<zone-name>/dhcpd.conf` -> `/var/run/sudonters/dhcp.d/<zone-name>-dhcpd.conf`
+* `<zone-name>/named.conf` -> `/var/run/sudonters/dns.d/<zone-name>`
+* `<zone-name>/dhcpd.conf` -> `/var/run/sudonters/dhcp.d/<zone-name>`
 
 

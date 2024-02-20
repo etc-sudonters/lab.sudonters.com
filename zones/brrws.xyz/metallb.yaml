@@ -1,0 +1,64 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: brrws-xyz
+  namespace: metallb
+spec:
+  autoAssign: true
+  avoidBuggyIPs: true
+  addresses:
+    - 10.60.22.0/24
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: brrws-xyz
+  namespace: metallb
+spec:
+  ipAddressPools:
+    - brrws-xyz
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: brrws-xyz
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dragonfruit
+  namespace: brrws-xyz
+  annotations:
+    metallb.universe.tf/address-pool: brrws-xyz
+    external-dns.alpha.kubernetes.io/hostname: dragonfruit.brrws.xyz
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 5678
+  selector:
+    app: dragonfruit
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dragonfruit
+  name: dragonfruit
+  namespace: brrws-xyz
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dragonfruit
+  template:
+    metadata:
+      labels:
+        app: dragonfruit
+    spec:
+      containers:
+      - image: hashicorp/http-echo
+        name: http-echo
+        args: ["-text", "dragonfruit"]
+        ports:
+          - containerPort: 5678

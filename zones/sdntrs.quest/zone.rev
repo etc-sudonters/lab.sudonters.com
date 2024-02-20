@@ -1,0 +1,11 @@
+$ORIGIN .
+$TTL 907200     ; 1 week 3 days 12 hours
+20.4.10.in-addr.arpa    IN SOA  dns.sdntrs.quest. etc.sudonters.com. (
+                                1263527896 ; serial
+                                10800      ; refresh (3 hours)
+                                3600       ; retry (1 hour)
+                                604800     ; expire (1 week)
+                                38400      ; minimum (10 hours 40 minutes)
+                                )
+                        NS      dns.sdntrs.quest.
+$ORIGIN 20.4.10.in-addr.arpa.

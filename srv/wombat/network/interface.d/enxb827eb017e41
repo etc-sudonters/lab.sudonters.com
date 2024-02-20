@@ -1,0 +1,7 @@
+auto enxb827eb017e41
+
+iface enxb827eb017e41 inet static
+address 10.31.0.1
+netmask 255.255.255.0
+dns-servers 10.31.0.2
+dns-search burrow.lab.sudonters.com

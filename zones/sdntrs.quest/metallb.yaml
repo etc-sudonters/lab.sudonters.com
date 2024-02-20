@@ -1,35 +1,36 @@
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
-  name: lab-internal
+  name: sdntrs-quest
   namespace: metallb
 spec:
   autoAssign: true
   avoidBuggyIPs: true
   addresses:
-    - 10.60.22.0/24
+    - 10.4.20.0/24
 ---
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
-  name: lab-internal
+  name: sdntrs-quest
   namespace: metallb
 spec:
   ipAddressPools:
-    - lab-internal
+    - sdntrs-quest
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: lab-internal-metallb
+  name: sdntrs-quest
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: lab-internal
-  namespace: lab-internal-metallb
+  name: dragonfruit
+  namespace: sdntrs-quest
   annotations:
-    metallb.universe.tf/address-pool: lab-internal
+    metallb.universe.tf/address-pool: sdntrs-quest
+    external-dns.alpha.kubernetes.io/hostname: dragonfruit.sdntrs.quest
 spec:
   type: LoadBalancer
   ports:
@@ -44,7 +45,7 @@ metadata:
   labels:
     app: dragonfruit
   name: dragonfruit
-  namespace: lab-internal-metallb
+  namespace: sdntrs-quest
 spec:
   replicas: 1
   selector:

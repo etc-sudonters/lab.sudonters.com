@@ -48,8 +48,8 @@ for fqzp in ${ZONE_BASE}/*/
 do
     echo "Attempting to load zone ${fqzp}"
 
-    tmp=${fqzp%*/}
-    zone=${tmp##*/}
+    fqzp=${fqzp%*/}
+    zone=${fqzp##*/}
 
     if [ -f "${fqzp}/load.sh" ]; then 
         . "${fqzp}/load.sh"

@@ -33,6 +33,7 @@ fi
 if echo $FEATURES | grep 'dhcp' > /dev/null; then 
     LOAD_DHCP=true
     mkdir -p /var/run/sudonters/dhcp.d
+    touch /var/run/sudonters/dhcp.d/conf
 fi
 
 if echo $FEATURES | grep 'router' > /dev/null; then 
@@ -44,12 +45,13 @@ echo "LOAD_DHCP: ${LOAD_DHCP}"
 echo "LOAD_ROUTER: ${LOAD_ROUTER}"
 
 
-for fqzp in ${ZONE_BASE}/*/
-do
-    echo "Attempting to load zone ${fqzp}"
 
-    fqzp=${fqzp%*/}
-    zone=${fqzp##*/}
+for path in ${ZONE_BASE}/*/
+do
+
+    export fqzp=$(realpath ${path%*/})
+    export zone=${fqzp##*/}
+    echo "Attempting to load zone ${fqzp}"
 
     if [ -f "${fqzp}/load.sh" ]; then 
         . "${fqzp}/load.sh"
@@ -58,11 +60,17 @@ do
     if [ $LOAD_DHCP = true ] && [ -f "${fqzp}/dhcpd.conf" ]; then 
         echo "Loading DHCP settings for ${zone}"
         ln -s "${fqzp}/dhcpd.conf" "/var/run/sudonters/dhcp.d/${zone}"
+	echo "include \"/var/run/sudonters/dhcp.d/${zone}\";" >> /var/run/sudonters/dhcp.d/conf
     fi
 
     if [ $LOAD_DNS = true ] && [ -f "${fqzp}/named.conf" ]; then
         echo "Loading DNS settings for ${zone}"
         ln -s "${fqzp}/named.conf" "/var/run/sudonters/dns.d/${zone}"
-    fi
+        if [ ! -f "${fqzp}/rndc-key" ]; then
+            echo "Creating ddns key"
+            key=$(echo "${zone}" | sed 's/\./-/g')
+            rndc-confgen -c "${fqzp}/rndc-key" -k "${key}" > "${fqzp}/rndc-key"
+        fi
+fi
 done
 

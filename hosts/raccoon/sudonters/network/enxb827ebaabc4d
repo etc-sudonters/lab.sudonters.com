@@ -4,3 +4,5 @@ iface enxb827ebaabc4d inet static
 address 10.31.0.2
 netmask 255.255.255.0
 gateway 10.31.0.1
+dns-servers 10.31.0.2;
+dns-search burrow.lab.sudonters.com;

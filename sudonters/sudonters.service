@@ -1,10 +1,19 @@
 [Unit]
 Description=Configures node based on /etc/sudonters
 Before=network-pre.target
-Wants=network-pre.target
+Before=isc-dhcp-server.service
+Before=named.service
+Requires=network-pre.target
+Requires=isc-dhcp-server.service
+Requires=named.service
 
 [Service]
-Type=oneshot
 RemainAfterExit=yes
-ExecStart=/etc/sudonters/network.sh /etc/sudonters/network/ /etc/network/
-ExecStart=/etc/sudonters/zones.sh /etc/sudonters/zones/
+ExecStart=/etc/sudonters/sudonters/network.sh /etc/sudonters/network/ /etc/network/
+ExecStart=/etc/sudonters/sudonters/zones.sh /etc/sudonters/zones/
+Type=oneshot
+
+[Install]
+RequiredBy=network-pre.target
+RequiredBy=named.service
+RequiredBy=isc-dhcp-server.service

@@ -10,4 +10,6 @@ if [ ! -d "$1" ]; then
     exit 0
 fi
 
-cp -rv "$1" "$2"
+BASE=$(realpath ${1%*/}) # yank any trailing slash to normalize"
+
+cp -rv "$BASE/" "$2"

@@ -20,23 +20,24 @@ fi
 FEATURES=$(cat "$SUDONTERS/features.json")
 echo "loaded features from ${SUDONTERS}/features.json"
 echo "${FEATURES}"
+LOAD=$(echo $FEATURES | jq '.load' -rM)
 LOAD_DNS=false
 LOAD_DHCP=false
 LOAD_ROUTER=false
 LAB_IP=$(echo $FEATURES | jq '.ip' -rM)
 
-if echo $FEATURES | grep 'dns' > /dev/null; then 
+if echo $LOAD | grep 'dns' > /dev/null; then 
     LOAD_DNS=true
     mkdir -p /var/run/sudonters/dns.d
 fi
 
-if echo $FEATURES | grep 'dhcp' > /dev/null; then 
+if echo $LOAD | grep 'dhcp' > /dev/null; then 
     LOAD_DHCP=true
     mkdir -p /var/run/sudonters/dhcp.d
     touch /var/run/sudonters/dhcp.d/conf
 fi
 
-if echo $FEATURES | grep 'router' > /dev/null; then 
+if echo $LOAD | grep 'router' > /dev/null; then 
     LOAD_ROUTER=true
 fi
 
@@ -45,13 +46,13 @@ echo "LOAD_DHCP: ${LOAD_DHCP}"
 echo "LOAD_ROUTER: ${LOAD_ROUTER}"
 
 
-
 for path in ${ZONE_BASE}/*/
 do
 
     export fqzp=$(realpath ${path%*/})
     export zone=${fqzp##*/}
-    echo "Attempting to load zone ${fqzp}"
+
+    echo "Processing ${zone}"
 
     if [ -f "${fqzp}/load.sh" ]; then 
         . "${fqzp}/load.sh"
@@ -66,11 +67,8 @@ do
     if [ $LOAD_DNS = true ] && [ -f "${fqzp}/named.conf" ]; then
         echo "Loading DNS settings for ${zone}"
         ln -s "${fqzp}/named.conf" "/var/run/sudonters/dns.d/${zone}"
-        if [ ! -f "${fqzp}/rndc-key" ]; then
-            echo "Creating ddns key"
-            key=$(echo "${zone}" | sed 's/\./-/g')
-            rndc-confgen -c "${fqzp}/rndc-key" -k "${key}" > "${fqzp}/rndc-key"
-        fi
-fi
+    fi
 done
 
+chmod -R a+wr /etc/sudonters/zones/
+chmod -R a+wr /var/run/sudonters/*.d/

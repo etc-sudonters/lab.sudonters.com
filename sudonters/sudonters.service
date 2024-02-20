@@ -8,10 +8,10 @@ Requires=isc-dhcp-server.service
 Requires=named.service
 
 [Service]
+Type=oneshot
 RemainAfterExit=yes
 ExecStart=/etc/sudonters/sudonters/network.sh /etc/sudonters/network/ /etc/network/
 ExecStart=/etc/sudonters/sudonters/zones.sh /etc/sudonters/zones/
-Type=oneshot
 
 [Install]
 RequiredBy=network-pre.target

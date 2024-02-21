@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 if [ $# != 2 ]; then
     echo "usage: gen-key.sh [key directory] [key name]"

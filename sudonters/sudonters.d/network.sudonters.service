@@ -1,0 +1,12 @@
+[Unit]
+Description=Configures node based on /etc/sudonters
+Before=network-pre.target
+Requires=network-pre.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/etc/sudonters/bin/network.sh /etc/sudonters/network/ /etc/network/
+
+[Install]
+RequiredBy=network-pre.target

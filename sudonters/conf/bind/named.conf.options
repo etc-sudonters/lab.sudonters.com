@@ -1,0 +1,31 @@
+options {
+	directory "/var/cache/bind";
+	dnssec-validation auto;
+
+	listen-on { 
+		${DNS_LISTEN}
+		127.0.0.1;
+		::1;
+	};
+
+	allow-new-zones yes;
+
+	auth-nxdomain no;
+	forwarders {
+        ${DNS_FORWARDS}
+	};
+
+	allow-query {
+        ${DNS_ALLOW_QUERY}
+		127.0.0.1;
+		::1;
+		localhost;
+	};
+
+	allow-transfer {
+        ${DNS_ALLOW_TRANSFER}
+		127.0.0.1;
+		::1;
+		localhost;
+	};
+};

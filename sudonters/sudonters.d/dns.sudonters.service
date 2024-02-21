@@ -1,0 +1,12 @@
+[Unit]
+Description=Configures dns server based on /etc/sudonters
+Before=named.service
+Requires=named.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/etc/sudonters/sudonters/zones.sh /etc/sudonters/zones/
+
+[Install]
+RequiredBy=named.service

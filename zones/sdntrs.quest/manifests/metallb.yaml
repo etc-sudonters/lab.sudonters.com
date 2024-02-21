@@ -19,11 +19,6 @@ spec:
     - sdntrs-quest
 ---
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: sdntrs-quest
----
-apiVersion: v1
 kind: Service
 metadata:
   name: dragonfruit

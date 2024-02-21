@@ -2,13 +2,14 @@
 set -eu
 
 SUDONTERS=${SUDONTERS:-/etc/sudonters/}
+SUDONTERS_RUN=${SUDONTERS_RUN:-"${SUDONTERS_RUN}"}
 
 if [ $# != 1 ]; then 
     echo "expected exactly 1 argument: <path to zones>"
     exit 2
 fi
 
-rm -rf /var/run/sudonters/*.d || true
+rm -rf "${SUDONTERS_RUN}"/*.d || true
 
 ZONE_BASE=${1%*/} # yank any trailing slash to normalize"
 
@@ -28,13 +29,13 @@ LAB_IP=$(echo $FEATURES | jq '.ip' -rM)
 
 if echo $LOAD | grep 'dns' > /dev/null; then 
     LOAD_DNS=true
-    mkdir -p /var/run/sudonters/dns.d
+    mkdir -p "${SUDONTERS_RUN}"/dns.d
 fi
 
 if echo $LOAD | grep 'dhcp' > /dev/null; then 
     LOAD_DHCP=true
-    mkdir -p /var/run/sudonters/dhcp.d
-    touch /var/run/sudonters/dhcp.d/conf
+    mkdir -p "${SUDONTERS_RUN}"/dhcp.d
+    touch "${SUDONTERS_RUN}"/dhcp.d/conf
 fi
 
 if echo $LOAD | grep 'router' > /dev/null; then 
@@ -60,15 +61,16 @@ do
 
     if [ $LOAD_DHCP = true ] && [ -f "${fqzp}/dhcpd.conf" ]; then 
         echo "Loading DHCP settings for ${zone}"
-        ln -s "${fqzp}/dhcpd.conf" "/var/run/sudonters/dhcp.d/${zone}"
-	echo "include \"/var/run/sudonters/dhcp.d/${zone}\";" >> /var/run/sudonters/dhcp.d/conf
+        ln -s "${fqzp}/dhcpd.conf" ""${SUDONTERS_RUN}"/dhcp.d/${zone}"
+	echo "include \""${SUDONTERS_RUN}"/dhcp.d/${zone}\";" >> "${SUDONTERS_RUN}"/dhcp.d/conf
     fi
 
     if [ $LOAD_DNS = true ] && [ -f "${fqzp}/named.conf" ]; then
         echo "Loading DNS settings for ${zone}"
-        ln -s "${fqzp}/named.conf" "/var/run/sudonters/dns.d/${zone}"
+        "${SUDONTERS}"/gen-key.sh "${fqzp}" "${zone}" 
+        ln -s "${fqzp}/named.conf" ""${SUDONTERS_RUN}"/dns.d/${zone}"
     fi
 done
 
 chmod -R a+wr /etc/sudonters/zones/
-chmod -R a+wr /var/run/sudonters/*.d/
+chmod -R a+wr "${SUDONTERS_RUN}"/*.d/

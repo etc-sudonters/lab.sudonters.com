@@ -19,11 +19,6 @@ spec:
     - brrws-xyz
 ---
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: brrws-xyz
----
-apiVersion: v1
 kind: Service
 metadata:
   name: dragonfruit

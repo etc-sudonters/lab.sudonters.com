@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+if [ $# != 2 ]; then
+    echo "usage: gen-key.sh [key directory] [key name]"
+    exit 2
+fi
+
+KEY_PATH="$1/rndc-key"
+
+if [ ! -f "${KEY_PATH}" ]; then
+    tsig-gen "$2" > "${KEY_PATH}"
+fi

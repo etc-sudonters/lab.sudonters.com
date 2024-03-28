@@ -1,0 +1,24 @@
+resources:
+  - serviceaccount-controller.yaml
+  - serviceaccount-speaker.yaml
+  - secret-cert.yaml
+  - configmap-excludel2.yaml
+  - configmap-frr-startup.yaml
+  - crd/brfdprofile.yaml
+  - crd/bgpadvertisement.yaml
+  - crd/bgppeer.yaml
+  - crd/community.yaml
+  - crd/ipaddresspool.yaml
+  - crd/l2advertisement.yaml
+  - clusterrole-controller.yaml
+  - clusterrole-speaker.yaml
+  - clusterrolebinding-controller.yaml
+  - clusterrolebinding-speaker.yaml
+  - role-pod-lister.yaml
+  - role-controller.yaml
+  - rolebinding-pod-lister.yaml
+  - rolebinding-controller.yaml
+  - service-webhook.yaml
+  - daemonset-speaker.yaml
+  - deployment-controller.yaml
+  - validatingwebhookconfiguration.yaml

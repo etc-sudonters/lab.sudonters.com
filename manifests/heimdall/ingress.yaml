@@ -1,0 +1,25 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: brrws-xyz
+  name: dashboard
+  namespace: dashboard
+spec:
+  ingressClassName: brrws-xyz
+  rules:
+  - host: dashboard.brrws.xyz
+    http:
+      paths:
+      - backend:
+          service:
+            name: dashboard
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - dashboard.brrws.xyz
+    secretName: dashboard-brrws-xyz

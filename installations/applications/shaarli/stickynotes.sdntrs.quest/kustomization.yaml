@@ -1,0 +1,22 @@
+bases:
+  - ../../../../apps/shaarli
+  - ./resources/persistentvolumeclaim.yaml
+patches:
+  - ./patches
+namespace: etc-links
+namePrefix: etc-links-
+labels:
+  app.kubernetes.io/instance: etc-links
+  app.kubernetes.io/managed-by: kustomize
+  app.kubernetes.io/name: shaarli
+  app.kubernetes.io/part-of: shaarli
+
+replacements:
+  - source:
+      name: shaarli
+      kind: PersistentVolumeClaim
+    target:
+      - select:
+          name: shaarli
+          kind: Pod
+

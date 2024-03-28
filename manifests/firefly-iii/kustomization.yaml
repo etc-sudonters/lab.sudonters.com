@@ -1,0 +1,7 @@
+resources:
+  - firefly-iii
+  - importer
+  - mysql
+labels:
+  - pairs:
+      "app.kubernetes.io/part-of": "firefly-iii"

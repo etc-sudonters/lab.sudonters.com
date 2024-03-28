@@ -1,0 +1,115 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: heimdall
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: brrws-xyz
+  name: dashboard-brrws
+  namespace: heimdall
+spec:
+  ingressClassName: brrws-xyz
+  rules:
+  - host: dashboard.brrws.xyz
+    http:
+      paths:
+      - backend:
+          service:
+            name: heimdall
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - dashboard.brrws.xyz
+    secretName: dashboard-brrws-xyz
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: sdntrs-quest
+  name: dashboard-sdntrs
+  namespace: heimdall
+spec:
+  ingressClassName: sdntrs-quest
+  rules:
+  - host: dashboard.sdntrs.quest
+    http:
+      paths:
+      - backend:
+          service:
+            name: heimdall
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - dashboard.sdntrs.quest
+    secretName: dashboard-sdntrs-quest
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: heimdall-storage
+  namespace: heimdall
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: local-path
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: heimdall
+  namespace: heimdall
+  labels:
+    app: heimdall
+spec:
+  containers:
+  - name: heimdall
+    image: lscr.io/linuxserver/heimdall:latest
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+    - name: data
+      mountPath: /config
+    ports:
+    - containerPort: 80
+      name: http
+    - containerPort: 443
+      name: https
+    env:
+      - name: PUID
+        value: "1000"
+      - name: PGID
+        value: "1000"
+      - name: TZ 
+        value: America/New_York
+  volumes:
+  - name: data
+    persistentVolumeClaim:
+      claimName: heimdall-storage
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: heimdall
+  namespace: heimdall
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  type: ClusterIP
+  selector:
+    app: heimdall

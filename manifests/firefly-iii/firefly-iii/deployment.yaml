@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: firefly-iii
+  labels:
+    app: firefly-iii
+spec:
+  selector:
+    matchLabels:
+      app: firefly-iii
+      tier: frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: firefly-iii
+        tier: frontend
+    spec:
+      containers:
+      - image: fireflyiii/core
+        name: firefly-iii
+        env:
+        - name: APP_ENV
+          value: "local"
+        - name: TRUSTED_PROXIES
+          value: "**"
+        ports:
+        - containerPort: 8080
+          name: http
+        volumeMounts:
+        - mountPath: "/var/www/html/storage/upload"
+          name: firefly-iii-upload 
+        imagePullPolicy: Always
+      volumes:
+        - name: firefly-iii-upload
+          persistentVolumeClaim:
+            claimName: firefly-iii-upload-claim

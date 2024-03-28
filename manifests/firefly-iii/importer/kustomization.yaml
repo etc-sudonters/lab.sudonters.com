@@ -1,0 +1,7 @@
+resources:
+  - deployment.yaml
+  - ingress.yaml
+  - service.yaml
+labels:
+  - pairs:
+      "app.kubernetes.io/app": "firefly-iii-importer"

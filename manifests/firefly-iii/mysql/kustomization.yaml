@@ -1,0 +1,7 @@
+resources:
+  - deployment.yaml
+  - pvc.yaml
+  - service.yaml
+labels:
+  - pairs:
+      "app.kubernetes.io/app": "mysql"

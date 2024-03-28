@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: heimdall
+  namespace: heimdall
+  labels:
+    app: heimdall
+spec:
+  containers:
+  - name: heimdall
+    image: lscr.io/linuxserver/heimdall:latest
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+    - name: data
+      mountPath: /config
+    ports:
+    - containerPort: 80
+      name: http
+    - containerPort: 443
+      name: http
+    env:
+      - name: PUID
+        value: "1000"
+      - name: PGID
+        value: "1000"
+      - name: TZ 
+        value: America/New_York
+  volumes:
+  - name: data
+    persistentVolumeClaim:
+      claimName: heimdall-storage

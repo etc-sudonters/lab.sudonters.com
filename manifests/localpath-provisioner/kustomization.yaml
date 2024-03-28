@@ -1,0 +1,9 @@
+resources:
+  - ./clusterole.yaml
+  - ./clusterrolebinding.yaml
+  - ./configmap.yaml
+  - ./deployment.yaml
+  - ./namespace.yaml
+  - ./rolebinding.yaml
+  - ./serviceaccount.yaml
+  - ./storageclass.yaml

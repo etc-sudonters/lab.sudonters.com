@@ -1,0 +1,6 @@
+resources:
+  - namespace.yaml
+  - persistentvolumeclaim.yaml
+  - pod.yaml
+  - service.yaml
+

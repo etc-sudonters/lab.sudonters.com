@@ -1,0 +1,4 @@
+resources:
+  - ../external-dns
+  - ../metallb-l2-ippool
+  - ../nginx-ingress

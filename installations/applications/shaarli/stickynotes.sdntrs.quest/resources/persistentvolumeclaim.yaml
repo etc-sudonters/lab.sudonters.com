@@ -1,18 +1,11 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  annotations:
-  name: shaarli-data
+  name: shaarli
 spec:
   accessModes:
-  - ReadWriteOnce
+  - ReadWriteMany
   resources:
     requests:
       storage: 2Gi
-  storageClassName: local-path
-  volumeMode: Filesystem
-status:
-  accessModes:
-  - ReadWriteOnce
-  capacity:
-    storage: 2Gi
+  storageClassName: grouse-non-raid

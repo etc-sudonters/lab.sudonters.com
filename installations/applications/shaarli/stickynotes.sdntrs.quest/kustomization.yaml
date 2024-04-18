@@ -1,22 +1,40 @@
-bases:
-  - ../../../../apps/shaarli
+resources:
+  - ../../../../manifests/shaarli
   - ./resources/persistentvolumeclaim.yaml
+  - ./resources/routing.yaml
 patches:
-  - ./patches
+  - path: patches/persistentVolume.yaml
 namespace: etc-links
 namePrefix: etc-links-
-labels:
+commonLabels:
   app.kubernetes.io/instance: etc-links
-  app.kubernetes.io/managed-by: kustomize
   app.kubernetes.io/name: shaarli
-  app.kubernetes.io/part-of: shaarli
-
+labels:
+  - pairs:
+      app.kubernetes.io/managed-by: kustomize
+    includeTemplates: true
 replacements:
   - source:
-      name: shaarli
       kind: PersistentVolumeClaim
-    target:
+      name: shaarli
+      fieldPath: metadata.name
+    targets:
       - select:
           name: shaarli
-          kind: Pod
-
+          kind: Deployment
+        fieldPaths:
+          - spec.template.spec.volumes.[name=data].persistentVolumeClaim.claimName
+        options:
+          create: true
+  - source:
+      kind: Service
+      name: shaarli
+      fieldPath: metadata.name
+    targets:
+      - select:
+          kind: Ingress
+          name: sdntrs-quest
+        fieldPaths:
+          - spec.rules.*.http.paths.*.backend.service.name
+        options:
+          create: true

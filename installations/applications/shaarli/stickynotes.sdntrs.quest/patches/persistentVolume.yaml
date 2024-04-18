@@ -1,10 +1,15 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
+  labels:
+    app: shaarli
   name: shaarli
-  namespace: shaarli
 spec:
-  volumes:
-    - name: data
-      persistentVolumeClaim: 
-        claimName: shaarli
+  template:
+    spec:
+      volumes:
+        - name: cache
+          emptyDir: {}
+        - name: data
+          persistentVolumeClaim:
+            claimName: default

@@ -1,0 +1,12 @@
+namespace: grouse
+resources:
+  - ../../../../manifests/nfs-subdir-external-provisioner
+patches:
+  - path: nfs-server-patch.yaml
+  - target:
+      kind: StorageClass
+      name: nfs-client
+    patch: |
+      - op: replace
+        path: /metadata/name
+        value: grouse-non-raid

@@ -1,0 +1,15 @@
+services:
+  bytestash:
+    image: "ghcr.io/jordan-dalby/bytestash:latest"
+    restart: always
+    volumes:
+      - .:/data/snippets
+    ports:
+      - "5000:5000"
+    environment:
+      # See https://github.com/jordan-dalby/ByteStash/wiki/FAQ#environment-variables
+      BASE_PATH: ""
+      ALLOW_NEW_ACCOUNTS: "false"
+      DEBUG: "true"
+      DISABLE_ACCOUNTS: "true"
+      DISABLE_INTERNAL_ACCOUNTS: "true"

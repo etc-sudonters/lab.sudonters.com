@@ -1,0 +1,25 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: sdntrs-quest
+  name: snippets
+  namespace: snippets
+spec:
+  ingressClassName: sdntrs-quest
+  rules:
+    - host: snippets.sdntrs.quest
+      http:
+        paths:
+          - backend:
+              service:
+                name: bytestash
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - snippets.sdntrs.quest
+      secretName: snippets-sdntrs-quest

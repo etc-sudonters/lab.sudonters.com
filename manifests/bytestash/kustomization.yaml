@@ -1,7 +1,7 @@
 resources:
   - deployment.yaml
+  - ingress.yaml
+  - namespace.yaml
   - pvc.yaml
   - service.yaml
-labels:
-  - pairs:
-      "app.kubernetes.io/app": "mysql"
+namespace: bytestash

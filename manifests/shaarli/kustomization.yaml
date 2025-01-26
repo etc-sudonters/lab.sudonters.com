@@ -1,6 +1,0 @@
-resources:
-  - namespace.yaml
-  - service.yaml
-  - deployment.yaml
-commonLabels:
-  app.kubernetes.io/part-of: shaarli

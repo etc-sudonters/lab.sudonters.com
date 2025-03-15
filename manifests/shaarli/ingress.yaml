@@ -1,0 +1,25 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: sdntrs-quest
+  name: sticky-notes
+  namespace: sticky-notes
+spec:
+  ingressClassName: sdntrs-quest
+  rules:
+    - host: sticky-notes.sdntrs.quest
+      http:
+        paths:
+          - backend:
+              service:
+                name: sticky-notes
+                port:
+                  name: http
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - sticky-notes.sdntrs.quest
+      secretName: sticky-notes-sdntrs-quest

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: shaarli
+  name: sticky-notes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shaarli
+  template:
+    metadata:
+      labels:
+        app: shaarli
+    spec:
+      containers:
+        - image: ghcr.io/shaarli/shaarli:latest
+          name: shaarli
+          ports:
+            - containerPort: 80
+              name: http
+          volumeMounts:
+            - name: data
+              mountPath: /var/www/shaarli/data
+            - name: cache
+              mountPath: /var/www/shaarli/cache
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: sticky-notes
+        - name: cache
+          emptyDir: {}

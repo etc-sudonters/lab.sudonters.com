@@ -1,0 +1,24 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: sdntrs-quest
+  name: registry
+spec:
+  ingressClassName: sdntrs-quest
+  rules:
+    - host: registry.sdntrs.quest
+      http:
+        paths:
+          - backend:
+              service:
+                name: registry
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - registry.sdntrs.quest
+      secretName: registry-sdntrs-quest

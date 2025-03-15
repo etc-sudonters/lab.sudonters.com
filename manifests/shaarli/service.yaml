@@ -10,3 +10,5 @@ spec:
       protocol: TCP
       targetPort: http
   type: ClusterIP
+  selector:
+    app: shaarli

@@ -28,6 +28,6 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            name: sticky-notes
+            claimName: sticky-notes
         - name: cache
           emptyDir: {}
